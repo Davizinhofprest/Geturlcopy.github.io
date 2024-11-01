@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copiar Texto da URL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        #text-to-copy {
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 15px 0;
+            word-wrap: break-word;
+        }
+
+        #copy-button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #copy-button:hover {
+            background-color: #ff4d4d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Texto para Copiar</h1>
+        <div id="text-to-copy">Carregando...</div>
+        <button id="copy-button">Copiar Texto</button>
+    </div>
+
+    <script>
+        // Função para obter o valor do parâmetro "text" na URL
+        function getParameterByName(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Obtém o texto da URL e exibe no elemento
+        const textToCopy = getParameterByName("text");
+        const textElement = document.getElementById("text-to-copy");
+        textElement.innerText = textToCopy || "Nenhum texto encontrado na URL.";
+
+        // Função para copiar o texto ao clicar no botão
+        document.getElementById("copy-button").addEventListener("click", () => {
+            navigator.clipboard.writeText(textElement.innerText)
+                .then(() => alert("Texto copiado para a área de transferência!"))
+                .catch(err => console.error("Erro ao copiar o texto: ", err));
+        });
+    </script>
+</body>
+</html>
