@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copiar Texto da URL</title>
+    <title>Checkpoint Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,21 +27,7 @@
             width: 90%;
         }
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        #text-to-copy {
-            font-size: 18px;
-            padding: 10px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 15px 0;
-            word-wrap: break-word;
-        }
-
-        #copy-button {
+        button {
             background-color: #ff6b6b;
             color: white;
             border: none;
@@ -50,38 +36,45 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 15px;
         }
 
-        #copy-button:hover {
+        button:hover {
             background-color: #ff4d4d;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Texto para Copiar</h1>
-        <div id="text-to-copy">Carregando...</div>
-        <button id="copy-button">Copiar Texto</button>
+        <h1>Access the Copy Page</h1>
+        <p id="key-display">Generated Key: <strong id="generated-key"></strong></p>
+        <button onclick="generateKey()">Generate Key</button>
+        <button id="verify-button" style="display: none;" onclick="verifyKey()">Verify Key</button>
+        <p id="link-display" style="margin-top: 20px;"></p>
     </div>
 
     <script>
-        // Função para obter o valor do parâmetro "text" na URL
-        function getParameterByName(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
+        let generatedKey = '';
+
+        function generateKey() {
+            // Gera uma chave aleatória
+            generatedKey = Math.random().toString(36).substring(2, 10); // Gera uma chave de 8 caracteres
+            document.getElementById("generated-key").innerText = generatedKey;
+            document.getElementById("verify-button").style.display = 'inline'; // Exibe o botão de verificação
         }
 
-        // Obtém o texto da URL e exibe no elemento
-        const textToCopy = getParameterByName("text");
-        const textElement = document.getElementById("text-to-copy");
-        textElement.innerText = textToCopy || "Nenhum texto encontrado na URL.";
+        function verifyKey() {
+            const userInput = prompt("Please enter the key to proceed:");
 
-        // Função para copiar o texto ao clicar no botão
-        document.getElementById("copy-button").addEventListener("click", () => {
-            navigator.clipboard.writeText(textElement.innerText)
-                .then(() => alert("Texto copiado para a área de transferência!"))
-                .catch(err => console.error("Erro ao copiar o texto: ", err));
-        });
+            if (userInput === generatedKey) {
+                const textToCopy = "Your text to copy"; // O texto que será copiado
+                const targetUrl = encodeURIComponent(`https://yourusername.github.io/yourrepo/copy.html?text=${textToCopy}`);
+                const lootLink = `https://loot-link.com?redirect=${targetUrl}`;
+                document.getElementById("link-display").innerHTML = `<a href="${lootLink}" target="_blank" style="color: #fff;">Proceed to Copy Page</a>`;
+            } else {
+                alert("Incorrect key! Please try again.");
+            }
+        }
     </script>
 </body>
 </html>
